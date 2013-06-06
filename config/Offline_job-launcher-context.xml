@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:beans="http://www.springframework.org/schema/beans" 
+		xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" 
+		xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 
+		xsi:schemaLocation="http://www.springframework.org/schema/beans spring-beans-2.5.xsd
+		http://www.springframework.org/schema/batch spring-batch-2.0.xsd
+		http://www.springframework.org/schema/aop spring-aop-2.5.xsd
+		http://www.springframework.org/schema/tx spring-tx-2.5.xsd
+		http://www.springframework.org/schema/context spring-context-3.0.xsd"> 
+			
+	<!-- Scan Spring Annotation Components. -->
+	<context:component-scan base-package="com.datalex"/>
+	<job id="tdpDataConversion" restartable="false" job-repository="jobRepository">
+		<step id="dataConversionTask">
+			<tasklet ref="DataConversionTask"/>
+		</step>
+	</job>
+	
+	<beans:bean id="DataConversionTask" class="com.datalex.data.task.DataConversionTask">
+		<beans:property name="handlers">
+			<beans:list>
+				<beans:ref bean="ExpediaAirportLocationWorker"/>
+				<beans:ref bean="ExpediaLocationWorker"/>
+			</beans:list>
+		</beans:property>
+		<beans:property name="persistence" ref="CastorPersistenceBean"/>
+	</beans:bean>
+	<beans:bean id="CastorPersistenceBean" class="com.datalex.data.persistence.CastorPersistenceBean">
+		<beans:property name="destDirectory" value="/datalex/workspace/00007876/src/java/"/>
+	</beans:bean>
+	<beans:bean id="ExpediaAirportLocationWorker" class="com.datalex.data.worker.ean.ExpediaAirportLocationWorker" parent="ExpediaLocationWorkerBase">
+		<beans:property name="files">
+			<beans:set>
+				<beans:value>AirportCoordinatesList.zip</beans:value>
+			</beans:set>
+		</beans:property>
+	</beans:bean>
+	<beans:bean id="ExpediaLocationWorker" class="com.datalex.data.worker.ean.ExpediaLocationWorker" parent="ExpediaLocationWorkerBase">
+		<beans:property name="acceptedRegionTypes">
+			<beans:set>
+				<beans:value>Multi-City (Vicinity)</beans:value>
+				<beans:value>City</beans:value>
+				<beans:value>Neighborhood</beans:value>
+				<beans:value>Point of Interest Shadow</beans:value>
+			</beans:set>
+		</beans:property>
+		<beans:property name="files">
+			<beans:set>
+				<beans:value>CountryList.zip</beans:value>
+				<beans:value>RegionCenterCoordinatesList.zip</beans:value>
+				<beans:value>AliasRegionList.zip</beans:value>
+				<beans:value>PointsOfInterestCoordinatesList.zip</beans:value>
+				<beans:value>ParentRegionList.zip</beans:value>
+			</beans:set>
+		</beans:property>
+	</beans:bean>
+	<beans:bean id="ExpediaLocationWorkerBase" abstract="true" class="com.datalex.data.worker.ean.ExpediaLocationWorkerBase">
+		<beans:property name="files">
+			<beans:set>
+				<beans:value/>
+			</beans:set>
+		</beans:property>
+		<beans:property name="directory" value="/datalex/workspace/00007876/src/java/"/>
+		<beans:property name="url" value="http://www.ian.com/affiliatecenter/include/V2/"/>
+	</beans:bean>
+	<beans:bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
+	<beans:bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
+	<beans:bean class="org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor">
+		<beans:property name="jobRegistry" ref="jobRegistry"/>
+	</beans:bean>
+	<beans:bean id="mapJobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean" lazy-init="true" autowire-candidate="false"/>
+	
+	<beans:bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<beans:property name="jobRepository" ref="jobRepository"/>
+	</beans:bean>
+	<beans:bean id="jobRegistry"
+		class="org.springframework.batch.core.configuration.support.MapJobRegistry" />
+	<beans:bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<beans:property name="transactionManager" ref="transactionManager"/>
+	</beans:bean>
+</beans:beans>
