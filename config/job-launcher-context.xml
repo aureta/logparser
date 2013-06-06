@@ -28,14 +28,16 @@
 	
 	<beans:bean id="tailFileReaderTask" class="com.amazon.task.TailFileReaderTask">
 		<beans:property name="reader" ref="logReader"/>
-		<beans:property name="fileEntry" ref="fileEntryReader"/>
-		<beans:property name="file" value="./data.log"/>
+		<beans:property name="fileEntry" ref="lineEntryReader"/>
+		<!-- full path to the log file -->
+		<beans:property name="file" value="/datalex/workspace/logparser/distrib/data.log"/>
 	</beans:bean>
 	
 	<beans:bean id="flatFileReaderTask" class="com.amazon.task.FlatFileReaderTask">
 		<beans:property name="reader" ref="logReader"/>
 		<beans:property name="fileEntry" ref="fileEntryReader"/>
-		<beans:property name="file" value="./data.log"/>
+		<!-- full path to the log file -->
+		<beans:property name="file" value="/datalex/workspace/logparser/distrib/data.log"/>
 	</beans:bean>
 	
 	<beans:bean id="logReader" class="com.amazon.LogReader">
