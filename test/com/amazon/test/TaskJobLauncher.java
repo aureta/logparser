@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:/datalex/workspace/logparser/config/job-launcher-context.xml" })
+@ContextConfiguration(locations = { "file:/path/to/job-launcher-context.xml" })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 public class TaskJobLauncher {
 	/** The job launcher. */
