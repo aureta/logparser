@@ -7,59 +7,16 @@
 		</layout>
 	</appender>
 	<appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="tdp_prod_catalogue.log"/>
+		<param name="File" value="logparser.log"/>
 		<param name="MaxFileSize" value="1024MB"/>
 		<param name="MaxBackupIndex" value="10"/>
 		<param name="Append" value="true"/>
 		<layout class="org.apache.log4j.PatternLayout">
-			<!-- USE CONVERSION PATTERN BELOW TO ENABLE LOGGING OF TRANSACTION ID, SESSION ID AND THREAD NAME -->
-			<!--
-			<param name="ConversionPattern" value="%d [%-5p] [%c] %m [TRANSACTION_ID=%X{LoggingContextKey.TRANSACTION_ID}] [SESSION_ID=%X{LoggingContextKey.SESSION_ID}] [%t]%n"/>
-			-->
 			<param name="ConversionPattern" value="%d [%-5p] [%t] [%c] %m%n"/>
 		</layout>
 	</appender>
-	<!-- Host Request Response Appender -->
-	<appender name="hostRequestResponseAppender" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="hotel.log"/>
-		<param name="MaxFileSize" value="10GB" />
-		<param name="MaxBackupIndex" value="20"/>
-		<param name="Append" value="true"/>
-		<layout class="org.apache.log4j.PatternLayout">
-			<!-- USE CONVERSION PATTERN BELOW TO ENABLE LOGGING OF TRANSACTION ID, SESSION ID AND THREAD NAME -->
-			<!--
-			<param name="ConversionPattern" value="%d [%-5p] [%c] %m [TRANSACTION_ID=%X{LoggingContextKey.TRANSACTION_ID}] [SESSION_ID=%X{LoggingContextKey.SESSION_ID}] [%t]%n"/>
-			-->
-			<param name="ConversionPattern" value="%d [%-5p] [%t] [%c] %m%n"/>
-		</layout>
-	</appender>
-	<!-- Statistics Appender DO NOT ENABLE this on PROD. -->
-	<appender name="statsAppender" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="statistics.log"/>
-		<param name="MaxFileSize" value="10GB" />
-		<param name="MaxBackupIndex" value="20"/>
-		<param name="Append" value="true"/>
-		<layout class="org.apache.log4j.PatternLayout">
-			<!-- USE CONVERSION PATTERN BELOW TO ENABLE LOGGING OF TRANSACTION ID, SESSION ID AND THREAD NAME -->
-			<!--
-			<param name="ConversionPattern" value="%d [%-5p] [%c] %m [TRANSACTION_ID=%X{LoggingContextKey.TRANSACTION_ID}] [SESSION_ID=%X{LoggingContextKey.SESSION_ID}] [%t]%n"/>
-			-->
-			<param name="ConversionPattern" value="%d [%-5p] [%t] [%c] %m%n"/>
-		</layout>
-	</appender>
-	
 	<!--  -->
-	<category name="com.datalex">
-		<priority value="info" />
-		<appender-ref ref="stdOut" />
-	</category>
-	<!-- 
-	<category name="com.datalex.staticloader.utils.stats">
-		<priority value="info" />
-        <appender-ref ref="statsAppender" />
-	</category>
-	 -->
-	<category name="org.springframework">
+	<category name="com.amazon">
 		<priority value="info" />
 		<appender-ref ref="stdOut" />
 	</category>
