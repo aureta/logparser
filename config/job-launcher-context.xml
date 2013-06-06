@@ -45,8 +45,16 @@
 	</beans:bean>
 	
 	<beans:bean id="reportWriterBase" abstract="true" class="com.amazon.writer.ReportWriterBase">
-		<beans:property name="connectedHostNames" value="host1"/>
-		<beans:property name="receivedConnectionsFrom" value="host2"/>
+		<beans:property name="connectedHostNames">
+			<beans:set>
+				<beans:value>host1</beans:value>
+			</beans:set>
+		</beans:property>
+		<beans:property name="receivedConnectionsFrom">
+			<beans:set>
+				<beans:value>host2</beans:value>
+			</beans:set>
+		</beans:property>
 	</beans:bean>
 	
 	<beans:bean id="consoleReportWriter" class="com.amazon.writer.ConsoleReportWriter" parent="reportWriterBase">
