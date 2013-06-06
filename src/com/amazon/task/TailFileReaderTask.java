@@ -16,9 +16,9 @@ import com.amazon.reader.LineEntryReader;
 
 public class TailFileReaderTask implements Tasklet {
 
-	LogReader reader;
-	LineEntryReader fileEntry;
-	File file;
+	private LogReader reader;
+	private LineEntryReader fileEntry;
+	private File file;
 
 	@SuppressWarnings("finally")
 	@Override
@@ -48,5 +48,29 @@ public class TailFileReaderTask implements Tasklet {
 			}
 			return RepeatStatus.FINISHED;
 		}
+	}
+
+	public LogReader getReader() {
+		return reader;
+	}
+
+	public void setReader(LogReader reader) {
+		this.reader = reader;
+	}
+
+	public LineEntryReader getFileEntry() {
+		return fileEntry;
+	}
+
+	public void setFileEntry(LineEntryReader fileEntry) {
+		this.fileEntry = fileEntry;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
 	}
 }
