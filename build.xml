@@ -8,21 +8,63 @@
      dev                                                                
      ====================================================================== -->
 <project name="project" default="default">
-    <description>
+	<description>
             description
     </description>
 
-    <!-- ================================= 
+	<!-- ================================= 
           target: default              
          ================================= -->
-    <target name="default" depends="depends" description="description">
-        
-    </target>
+	<target name="default" depends="jar" description="description">
 
-    <!-- - - - - - - - - - - - - - - - - - 
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
           target: depends                      
          - - - - - - - - - - - - - - - - - -->
-    <target name="depends">
-    </target>
+	<target name="jar">
+		<mkdir dir="${basedir}/distrib" />
+		<mkdir dir="${basedir}/distrib/jars/" />
+		<fileset dir="${basedir}/lib/" id="jar.files">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+		<pathconvert property="jar.classpath" refid="jar.files" pathsep=" " dirsep="/">
+			<flattenmapper />
+		</pathconvert>
+		<mkdir dir="${basedir}/classes" />
+		<javac source="1.6" srcdir="${basedir}/src" destdir="${basedir}/classes" optimize="true">
+			<classpath>
+				<fileset dir="${basedir}/lib/">
+					<include name="*.jar" />
+					<include name="*.zip" />
+				</fileset>
+			</classpath>
+		</javac>
+		<!-- build jar -->
+		<jar destfile="${basedir}/distrib/jars/logparser.jar">
+			<fileset dir="${basedir}/src/">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>
+			<fileset dir="${basedir}/classes" />
+			<manifest>
+				<attribute name="Class-Path" value="${jar.classpath}" />
+			</manifest>
+		</jar>
+		<copy todir="${basedir}/distrib/jars/">
+			<fileset dir="${basedir}/lib/">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${basedir}/distrib/">
+			<fileset dir="${basedir}/config">
+				<include name="*.xml" />
+				<include name="*.xsd" />
+				<include name="*.properties" />
+				<include name="*.sh" />
+			</fileset>
+		</copy>
+	</target>
 
 </project>
